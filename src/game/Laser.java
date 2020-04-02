@@ -18,4 +18,5 @@ public class Laser extends GameElements {
 	public int NbCurrentBullet;
 	public static int NbMaxBullet;
 	public static int minBullet;
+	public int lifePoint;
 }
