@@ -18,6 +18,10 @@ public class Laser extends GameElements {
 	public int NbCurrentBullet;
 	public static int NbMaxBullet;
 	public static int minBullet;
+<<<<<<< HEAD
 	public int toto;
 	public int test;
+=======
+	public int lifePoint;
+>>>>>>> branch 'master' of https://github.com/arcreane/java-project-kylian-clems-leo.git
 }
