@@ -9,8 +9,8 @@ import javax.swing.*;
 public class Move implements Runnable {
 
 JFrame frame;
-int myX = 400;
-int myY = 400;
+int myX = 500;
+int myY = 800;
 Canvas canvas;
 BufferStrategy bufferStrategy;
 boolean running = true;
@@ -18,7 +18,7 @@ boolean running = true;
 public Move() {
 	frame = new JFrame("Basic Game");
 	JPanel panel = (JPanel) frame.getContentPane();
-	panel.setPreferredSize(new Dimension(500, 500));
+	panel.setPreferredSize(new Dimension(500, 800));
 	panel.setLayout(null);
 	canvas = new Canvas();
 	canvas.setBounds(0, 0, 500, 500);
@@ -63,17 +63,11 @@ public Move() {
 	}
 	public void moveIt(KeyEvent evt) {
 		switch (evt.getKeyCode()) {
-		case KeyEvent.VK_DOWN:
-		myY += 5;
-		break;
-		case KeyEvent.VK_UP:
-		myY -= 5;
-		break;
 		case KeyEvent.VK_LEFT:
-		myX -= 5;
+		myX -= 20;
 		break;
 		case KeyEvent.VK_RIGHT:
-		myX += 5;
+		myX += 20;
 		break;
 	}
 	
