@@ -36,4 +36,12 @@ public class Player extends Character {
 	
 	public void Die() {
 	}
+	
+	public void AddNbLifes(int LifePoint) {
+		if(NbLifes != 3) {
+			NbLifes += 1;
+		}else {
+			NbLifes += 0;
+		}
+	}
 }
