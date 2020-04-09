@@ -64,10 +64,18 @@ public Move() {
 	public void moveIt(KeyEvent evt) {
 		switch (evt.getKeyCode()) {
 		case KeyEvent.VK_LEFT:
+		if(myX == 10) {
+			myX += 0;
+		} else {
 		myX -= 20;
+		}
 		break;
 		case KeyEvent.VK_RIGHT:
+		if(myX == 430) {
+			myX += 0;
+		} else {	
 		myX += 20;
+			}
 		break;
 	}
 	
