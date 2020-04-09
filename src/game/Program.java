@@ -12,5 +12,6 @@ public class Program {
 		map = new Map();
 		
 		map.draw();
+		
 	}
 }
