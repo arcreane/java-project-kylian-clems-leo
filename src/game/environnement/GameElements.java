@@ -5,3 +5,4 @@ public class GameElements {
 	public Object Coordinate;
 	public Object DisplayManagement;
 }
+ 
