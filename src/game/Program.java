@@ -18,12 +18,6 @@ public class Program {
 		app.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		app.setSize(600, 700);
 		app.setVisible(true);
-		
-		
-		
-		
-		
-		
-		
+			
 	}
 }
