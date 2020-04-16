@@ -16,7 +16,7 @@ BufferStrategy bufferStrategy;
 boolean running = true;
 
 public Move() {
-	frame = new JFrame("Basic Game");
+	frame = new JFrame("Pussy Runner");
 	JPanel panel = (JPanel) frame.getContentPane();
 	panel.setPreferredSize(new Dimension(500, 800));
 	panel.setLayout(null);
