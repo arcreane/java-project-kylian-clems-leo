@@ -4,7 +4,7 @@ import game.environnement.Laser;
 import game.environnement.Shield;
 
 public class Player extends Character {
-	public int NbLifes;
+	public int NbNewBullet;
 	public Shield Shield;
 	public Laser Laser;
 	public void Shoot() {
@@ -42,6 +42,14 @@ public class Player extends Character {
 			NbLifes += 1;
 		}else {
 			NbLifes += 0;
+		}
+	}
+	
+	public void AddNbLaser(int LaserNumber) {
+		if(NbNewBullet == 3) {
+			//NewBiglaser += 1;
+		}else {
+			NbNewBullet += 0;
 		}
 	}
 }
