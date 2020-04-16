@@ -5,6 +5,7 @@ import game.environnement.Shield;
 
 public class Player extends Character {
 	public int NbNewBullet;
+	public Shield NbShields;
 	public Shield Shield;
 	public Laser Laser;
 	public void Shoot() {
