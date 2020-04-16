@@ -7,10 +7,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Random;
 
+import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
@@ -26,20 +30,29 @@ public class Work extends JPanel implements ActionListener, KeyListener {
 	private int HEIGHT=800;
 	private ArrayList <Rectangle> ennemies;
 	private Random rand;
+	private boolean isALive = true;
+	BufferedImage carImage;
 	Timer t;
 	private Rectangle car;
 	
 	public Work() {
+		try {
+			carImage=ImageIO.read(new File("//Users/kylian/Documents/carImage.png"));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		t=new Timer(20, this);
 		rand = new Random();
 		ennemies = new ArrayList<Rectangle>();
-		car = new Rectangle(105, HEIGHT-230, 90, 80);
+		car = new Rectangle(105, HEIGHT-230, 90, 100);
 		space = 105;
 		speed = 2;
+		
 		addKeyListener(this);
 		setFocusable(true);
 		
-		for(int i=0;i<2;i++) {
+		for(int i=0;i<6;i++) {
 			addennemies(true);
 		}
 		
@@ -78,12 +91,17 @@ public class Work extends JPanel implements ActionListener, KeyListener {
 	
 	public void paintComponent(Graphics g) {
 		super.paintComponents(g);
+		
 		g.setColor(Color.black);
 		g.fillRect(0, 0, WIDTH, HEIGHT);
 		g.setColor(Color.darkGray);
 		g.fillRect(100, 0, 400, HEIGHT);
+		
+		//g.drawImage(carImage, car.x, car.y, null);
+		
 		g.setColor(Color.red);
 		g.fillRect(car.x, car.y, car.width, car.height);
+		
 		g.setColor(Color.pink);
 		g.drawLine(200, 0, 200, HEIGHT);
 		g.setColor(Color.pink);
@@ -97,9 +115,14 @@ public class Work extends JPanel implements ActionListener, KeyListener {
 			
 			g.fillRect(rect.x, rect.y, rect.width, rect.height);
 		}
+		
+		if(isALive == false) {
+			g.setColor(Color.white);
+			g.drawString("PERDU", 250, 100);
+		}
 	}
 	
-
+	
 	
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
@@ -118,19 +141,23 @@ public class Work extends JPanel implements ActionListener, KeyListener {
 		
 		for(Rectangle r:ennemies) {
 			if(r.intersects(car)) {
+				isALive = false;
 				car.y=r.y+height;
 			}
 		}
+		
 		
 		for(int i=0;i<ennemies.size();i++) {
 			rect=ennemies.get(i);
 			if(rect.y+rect.height>HEIGHT) {
 				ennemies.remove(rect);
 				addennemies(false);
+				
+				
 			}
 		}
 		
-		repaint();
+			repaint();
 		
 	}
 
@@ -175,7 +202,9 @@ public class Work extends JPanel implements ActionListener, KeyListener {
 			default:
 				break;
 		}
-	}	
+	}
+
+	
 	
 
 }
