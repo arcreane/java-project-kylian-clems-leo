@@ -33,12 +33,14 @@ public class Work extends JPanel implements ActionListener, KeyListener {
 	private int score = 0;
 	private ArrayList <Rectangle> ennemies;
 	private ArrayList <Rectangle> bonus;
+	private ArrayList <Rectangle> shield;
 	private Random rand;
 	private boolean isALive = true;
 	BufferedImage carImage;
 	BufferedImage ennemie;
 	BufferedImage bg;
 	BufferedImage bonusImage;
+	BufferedImage shieldImage;
 	Timer t;
 	private Rectangle car;
 	
@@ -47,6 +49,7 @@ public class Work extends JPanel implements ActionListener, KeyListener {
 			
 			carImage=ImageIO.read(new File( "src/car.png"));
 			ennemie=ImageIO.read(new File("src/ennemy.png"));
+			shieldImage=ImageIO.read(new File("src/shield.png"));
 			bg=ImageIO.read(new File("src/bg-game.png"));
 			bonusImage = ImageIO.read(new File("src/bonus-more.png"));
 		} catch (IOException e) {
@@ -58,6 +61,7 @@ public class Work extends JPanel implements ActionListener, KeyListener {
 		
 		ennemies = new ArrayList<Rectangle>();
 		bonus = new ArrayList<Rectangle>();
+		shield = new ArrayList<Rectangle>();
 		car = new Rectangle(105, HEIGHT-230, width, height);
 		space = 105;
 		speed = 3;
@@ -65,15 +69,12 @@ public class Work extends JPanel implements ActionListener, KeyListener {
 		addKeyListener(this);
 		setFocusable(true);
 		
-		for(int i=0; i<6; i++) {
+		for(int i=0; i<3; i++) {
 			
 			addennemies(true);
 			
 		}
-		
-		
-		
-		
+
 		t.start();
 	}
 	
@@ -81,7 +82,7 @@ public class Work extends JPanel implements ActionListener, KeyListener {
 	public void addbonus() {
 		int [] positionEnnemies = {105,205,305,405};
 		int select=rand.nextInt(4);
-		//System.out.println("numéro : " + select);
+		//System.out.println("num�ro : " + select);
 		int positionX = (int)Array.get(positionEnnemies, select);
 		int x=0;
 		int y=0;
@@ -99,12 +100,34 @@ public class Work extends JPanel implements ActionListener, KeyListener {
 		} else {
 			
 		}
-		
-		
 
 			bonus.add(new Rectangle(x, y-100-(bonus.size()*space), Width, 50));
 		
+	}
+	
+	public void addshield() {
+		int [] positionEnnemies = {105,205,305,405};
+		int select=rand.nextInt(4);
+		//System.out.println("num�ro : " + select);
+		int positionX = (int)Array.get(positionEnnemies, select);
+		int x=0;
+		int y=0;
+		int Width=width;
+		int Height=height;
+		
+		if(positionX == 105) {
+			x=105;
+		} else if(positionX == 205) {
+			x=205;
+		} else if(positionX == 305) {
+			x=305;
+		} else if(positionX == 405) {
+			x=405;
+		} else {
 			
+		}
+
+			shield.add(new Rectangle(x, y-100-(shield.size()*space), Width, 50));
 		
 	}
 	
@@ -112,7 +135,7 @@ public class Work extends JPanel implements ActionListener, KeyListener {
 	public void addennemies(boolean first) {
 		int [] positionEnnemies = {105,205,305,405};
 		int select=rand.nextInt(4);
-		//System.out.println("numéro : " + select);
+		//System.out.println("num�ro : " + select);
 		int positionX = (int)Array.get(positionEnnemies, select);
 		int x=0;
 		int y=0;
@@ -132,9 +155,9 @@ public class Work extends JPanel implements ActionListener, KeyListener {
 		}
 		
 		if(first) {
-			ennemies.add(new Rectangle(x, y-200-(ennemies.size()*space), Width, 90));
+			ennemies.add(new Rectangle(x, y-200-(ennemies.size()*space)-100, Width, 90));
 		} else {
-			ennemies.add(new Rectangle(x, ennemies.get(ennemies.size()-1).y-250, Width, 90));
+			ennemies.add(new Rectangle(x, ennemies.get(ennemies.size()-1).y-300, Width, 90));
 		}
 		
 	}
@@ -147,8 +170,6 @@ public class Work extends JPanel implements ActionListener, KeyListener {
 		
 		g.drawImage(carImage, car.x, car.y, null);
 		
-		
-		
 		g.setColor(Color.red);
 		g.drawString("SPACE", 30, 30);
 		g.drawString("ESCAPE", 25, 45);
@@ -157,12 +178,18 @@ public class Work extends JPanel implements ActionListener, KeyListener {
 		g.drawString("VITESSE : " + speed, 15, 125);
 		
 		
-		g.drawString("RAMASSEZ" , 20, 340);
-		g.drawString("L'ICON" , 30, 360);
-		g.drawImage(bonusImage, 10, 365, null);
-		g.drawString("REDUIT" , 30, 435);
-		g.drawString("LA VITESSE" , 20, 450);
+		g.drawString("RAMASSEZ" , 15, 240);
+		g.drawString("L'ICON" , 25, 260);
+		g.drawImage(bonusImage, 5, 265, null);
+		g.drawString("REDUIT" , 25, 335);
+		g.drawString("LA VITESSE" , 10, 350);
 		
+		g.drawString("RAMASSEZ" , 15, 440);
+		g.drawString("L'ICON" , 25, 460);
+		g.drawImage(shieldImage, 5, 465, null);
+		g.drawString("DETRUIT" , 25, 535);
+		g.drawString("LES ENNEMIES" , 5, 550);
+
 		
 		g.drawString("____________", 10, 640);
 		g.drawString("DEV BY KCL" , 15, 660);
@@ -172,13 +199,15 @@ public class Work extends JPanel implements ActionListener, KeyListener {
 			g.drawImage(bonusImage, rect.x,rect.y, null);
 		}
 		
+		for(Rectangle rect:shield) {
+			g.drawImage(shieldImage, rect.x,rect.y, null);
+		}
+		
 		for(Rectangle rect:ennemies) {
 			g.drawImage(ennemie, rect.x, rect.y, null);
 			//g.fillRect(rect.x, rect.y, rect.width, rect.height);
 		}
-		
-		
-		
+
 		if(isALive == false) {
 			g.setColor(Color.red);
 			Font myFont = new Font ("Courier New", 1, 24);
@@ -191,8 +220,6 @@ public class Work extends JPanel implements ActionListener, KeyListener {
 			g.drawString("Tapez entrer pour recommercer", 130, 160);
 		}
 	}
-	
-	
 	
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
@@ -207,16 +234,37 @@ public class Work extends JPanel implements ActionListener, KeyListener {
  			rect.y+=speed;
 		}
 		
+		for(int i=0; i<shield.size();i++) {
+			rect=shield.get(i);
+			rect.y+=speed;
+ 			
+		}
+		
+		
 		for(Rectangle r:ennemies) {
-			if(r.intersects(car)) {
+			if(r.intersects(car)) {	
 				isALive = false;
-				car.y=r.y+height;
+				car.y=r.y+height;	
 			}
 		}
 		
 		for(Rectangle r:bonus) {
 			if(r.intersects(car)) {
 				speed = 3;
+			}
+		}
+		
+		for(Rectangle r:shield) {
+			if(r.intersects(car)) {
+			
+				ennemies = new ArrayList<Rectangle>();
+				
+			}
+			
+		}
+		if(ennemies.isEmpty()) {
+			for(int j =0; j<3; j++) {
+				addennemies(true);
 			}
 		}
 		
@@ -248,6 +296,12 @@ public class Work extends JPanel implements ActionListener, KeyListener {
 					//System.out.println(num);
 					if(num == 0) {
 						addbonus();
+					
+					}
+					if(num == 23 || num == 80) {
+		
+						addshield();
+						
 					}
 				}
 			}
