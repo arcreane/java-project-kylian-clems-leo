@@ -60,9 +60,11 @@ public class Work extends JPanel implements ActionListener, KeyListener {
 		addKeyListener(this);
 		setFocusable(true);
 		
-		for(int i=0;i<6;i++) {
+		for(int i=0; i<10; i++) {
 			addennemies(true);
 		}
+		
+		
 		
 		t.start();
 	}
@@ -70,7 +72,7 @@ public class Work extends JPanel implements ActionListener, KeyListener {
 	public void addennemies(boolean first) {
 		int [] positionEnnemies = {105,205,305,405};
 		int select=rand.nextInt(4);
-		System.out.println("numéro : " + select);
+		//System.out.println("numéro : " + select);
 		int positionX = (int)Array.get(positionEnnemies, select);
 		int x=0;
 		int y=0;
@@ -90,9 +92,9 @@ public class Work extends JPanel implements ActionListener, KeyListener {
 		}
 		
 		if(first) {
-			ennemies.add(new Rectangle(x, y-100-(ennemies.size()*space), Width, Height));
+			ennemies.add(new Rectangle(x, y-100-(ennemies.size()*space), Width, 90));
 		} else {
-			ennemies.add(new Rectangle(x, ennemies.get(ennemies.size()-1).y-500, Width, Height));
+			ennemies.add(new Rectangle(x, ennemies.get(ennemies.size()-1).y-250, Width, 90));
 		}
 		
 	}
@@ -186,7 +188,10 @@ public class Work extends JPanel implements ActionListener, KeyListener {
 			if(rect.y+rect.height>HEIGHT) {
 				ennemies.remove(rect);
 				if(isALive == true) {
-					addennemies(false);
+					for(int j =0; j<6; j++) {
+						addennemies(false);
+					}
+					
 				}
 				
 				
