@@ -137,6 +137,11 @@ public class Work extends JPanel implements ActionListener, KeyListener {
 			Font myFont = new Font ("Courier New", 1, 24);
 			g.setFont (myFont);
 			g.drawString("GAME OVER", 240, 100);
+			g.drawString("VOTRE SCORE : " + score, 200, 120);
+			g.setColor(Color.white);
+			Font myFont2 = new Font ("Courier New", 1, 20);
+			g.setFont (myFont2);
+			g.drawString("Tapez entrer pour recommercer", 130, 160);
 		}
 	}
 	
