@@ -32,11 +32,13 @@ public class Work extends JPanel implements ActionListener, KeyListener {
 	private int HEIGHT=800;
 	private int score = 0;
 	private ArrayList <Rectangle> ennemies;
+	private ArrayList <Rectangle> bonus;
 	private Random rand;
 	private boolean isALive = true;
 	BufferedImage carImage;
 	BufferedImage ennemie;
 	BufferedImage bg;
+	BufferedImage bonusImage;
 	Timer t;
 	private Rectangle car;
 	
@@ -46,13 +48,16 @@ public class Work extends JPanel implements ActionListener, KeyListener {
 			carImage=ImageIO.read(new File( "src/car.png"));
 			ennemie=ImageIO.read(new File("src/ennemy.png"));
 			bg=ImageIO.read(new File("src/bg-game.png"));
+			bonusImage = ImageIO.read(new File("src/bonus-more.png"));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		t=new Timer(20, this);
 		rand = new Random();
+		
 		ennemies = new ArrayList<Rectangle>();
+		bonus = new ArrayList<Rectangle>();
 		car = new Rectangle(105, HEIGHT-230, width, height);
 		space = 105;
 		speed = 3;
@@ -61,13 +66,48 @@ public class Work extends JPanel implements ActionListener, KeyListener {
 		setFocusable(true);
 		
 		for(int i=0; i<10; i++) {
+			
 			addennemies(true);
+			
 		}
+		
 		
 		
 		
 		t.start();
 	}
+	
+	
+	public void addbonus() {
+		int [] positionEnnemies = {105,205,305,405};
+		int select=rand.nextInt(4);
+		//System.out.println("numéro : " + select);
+		int positionX = (int)Array.get(positionEnnemies, select);
+		int x=0;
+		int y=0;
+		int Width=width;
+		int Height=height;
+		
+		if(positionX == 105) {
+			x=105;
+		} else if(positionX == 205) {
+			x=205;
+		} else if(positionX == 305) {
+			x=305;
+		} else if(positionX == 405) {
+			x=405;
+		} else {
+			
+		}
+		
+		
+
+			bonus.add(new Rectangle(x, y-100-(bonus.size()*space), Width, 50));
+		
+			
+		
+	}
+	
 	
 	public void addennemies(boolean first) {
 		int [] positionEnnemies = {105,205,305,405};
@@ -92,7 +132,7 @@ public class Work extends JPanel implements ActionListener, KeyListener {
 		}
 		
 		if(first) {
-			ennemies.add(new Rectangle(x, y-100-(ennemies.size()*space), Width, 90));
+			ennemies.add(new Rectangle(x, y-200-(ennemies.size()*space), Width, 90));
 		} else {
 			ennemies.add(new Rectangle(x, ennemies.get(ennemies.size()-1).y-250, Width, 90));
 		}
@@ -102,37 +142,42 @@ public class Work extends JPanel implements ActionListener, KeyListener {
 	public void paintComponent(Graphics g) {
 		super.paintComponents(g);
 		
-		//g.setColor(Color.black);
-		//g.fillRect(0, 0, WIDTH, HEIGHT);
+		
 		g.drawImage(bg, 0, 0, null);
-		//g.drawImage(ennemie, 0, 400, null);
-		//g.setColor(Color.darkGray);
-		//g.fillRect(100, 0, 400, HEIGHT);
 		
 		g.drawImage(carImage, car.x, car.y, null);
 		
-		//g.setColor(Color.red);
-		//g.fillRect(car.x, car.y, car.width, car.height);
 		
-		//g.setColor(Color.pink);
-		//g.drawLine(200, 0, 200, HEIGHT);
-		//g.setColor(Color.pink);
-		//g.drawLine(300, 0, 300, HEIGHT);
-		//g.setColor(Color.pink);
-		//g.drawLine(400, 0, 400, HEIGHT);
+		
 		g.setColor(Color.red);
-		g.drawString("SPACE", 23, 30);
-		g.drawString("ESCAPE", 20, 45);
+		g.drawString("SPACE", 30, 30);
+		g.drawString("ESCAPE", 25, 45);
 		g.drawString("____________", 10, 60);
 		g.drawString("SCORE : " + score, 15, 100);
+		g.drawString("VITESSE : " + speed, 15, 125);
+		
+		
+		g.drawString("RAMASSEZ" , 20, 340);
+		g.drawString("L'ICON" , 30, 360);
+		g.drawImage(bonusImage, 10, 365, null);
+		g.drawString("REDUIT" , 30, 435);
+		g.drawString("LA VITESSE" , 20, 450);
+		
+		
 		g.drawString("____________", 10, 640);
 		g.drawString("DEV BY KCL" , 15, 660);
 		//g.setColor(Color.MAGENTA);
+		
+		for(Rectangle rect:bonus) {
+			g.drawImage(bonusImage, rect.x,rect.y, null);
+		}
 		
 		for(Rectangle rect:ennemies) {
 			g.drawImage(ennemie, rect.x, rect.y, null);
 			//g.fillRect(rect.x, rect.y, rect.width, rect.height);
 		}
+		
+		
 		
 		if(isALive == false) {
 			g.setColor(Color.red);
@@ -157,6 +202,10 @@ public class Work extends JPanel implements ActionListener, KeyListener {
 			rect=ennemies.get(i);
  			rect.y+=speed;
 		}
+		for(int i=0; i<bonus.size();i++) {
+			rect=bonus.get(i);
+ 			rect.y+=speed;
+		}
 		
 		for(Rectangle r:ennemies) {
 			if(r.intersects(car)) {
@@ -164,11 +213,18 @@ public class Work extends JPanel implements ActionListener, KeyListener {
 				car.y=r.y+height;
 			}
 		}
+		
+		for(Rectangle r:bonus) {
+			if(r.intersects(car)) {
+				speed = 3;
+			}
+		}
+		
 		if(isALive == true ) {
 			if(count%1000 == 0) {
-				speed = speed + 2;
+				speed =  speed + 2;
 				if(move<50) {
-					move = move+10;
+					move += 10;
 				}
 			}
 			if(count%20 == 0) {
@@ -180,9 +236,6 @@ public class Work extends JPanel implements ActionListener, KeyListener {
 		repaint();
 		
 		
-		
-		
-		
 		for(int i=0;i<ennemies.size();i++) {
 			rect=ennemies.get(i);
 			if(rect.y+rect.height>HEIGHT) {
@@ -192,6 +245,11 @@ public class Work extends JPanel implements ActionListener, KeyListener {
 						addennemies(false);
 					}
 					
+					int num = rand.nextInt(101);
+					if(num <= 5) {
+						System.out.println(num);
+						addbonus();
+					}
 				}
 				
 				
