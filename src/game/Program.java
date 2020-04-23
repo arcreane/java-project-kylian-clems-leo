@@ -2,13 +2,18 @@ package game;
 
 import game.terrain.Map;
 
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+
 import javax.swing.JFrame;
 
 import game.Work;
 
-public class Program {
+public class Program implements KeyListener {
 	
 	public static Map map;
+	
+	
 
 	public static void main(String[] args) {
 		
@@ -19,5 +24,31 @@ public class Program {
 		app.setSize(600, 700);
 		app.setVisible(true);
 			
+	}
+	
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		// TODO Auto-generated method stub
+		int key=e.getKeyCode();
+		switch(key) {
+			case KeyEvent.VK_ENTER:
+				main(new String[0]);
+				break;
+			default:
+				break;
+		}
 	}
 }

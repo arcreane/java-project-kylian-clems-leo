@@ -244,20 +244,14 @@ public class Work extends JPanel implements ActionListener, KeyListener {
 					for(int j =0; j<6; j++) {
 						addennemies(false);
 					}
-					
 					int num = rand.nextInt(101);
-					if(num <= 5) {
-						System.out.println(num);
+					//System.out.println(num);
+					if(num == 0) {
 						addbonus();
 					}
 				}
-				
-				
 			}
 		}
-		
-			
-		
 	}
 
 	
@@ -268,6 +262,7 @@ public class Work extends JPanel implements ActionListener, KeyListener {
 			car.x-=move;
 		}
 	}
+	
 	public void moveright() {
 		if(car.x+move>WIDTH/2+5) {
 			
