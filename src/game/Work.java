@@ -11,6 +11,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Array;
+
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -22,22 +23,28 @@ public class Work extends JPanel implements ActionListener, KeyListener {
 	
 	private int space;
 	private int width=90;
-	private int height=110;
+	private int height=100;
 	private int speed;
 	private int move = 100;
 	private int count = 1;
 	private int WIDTH=800;
 	private int HEIGHT=800;
+	private int score = 0;
 	private ArrayList <Rectangle> ennemies;
 	private Random rand;
 	private boolean isALive = true;
 	BufferedImage carImage;
+	BufferedImage ennemie;
+	BufferedImage bg;
 	Timer t;
 	private Rectangle car;
 	
 	public Work() {
 		try {
-			carImage=ImageIO.read(new File("//Users/kylian/Documents/carImage.png"));
+			
+			carImage=ImageIO.read(new File( "src/car.png"));
+			ennemie=ImageIO.read(new File("src/ennemy.png"));
+			bg=ImageIO.read(new File("src/bg-game.png"));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -45,9 +52,9 @@ public class Work extends JPanel implements ActionListener, KeyListener {
 		t=new Timer(20, this);
 		rand = new Random();
 		ennemies = new ArrayList<Rectangle>();
-		car = new Rectangle(105, HEIGHT-230, 90, 100);
+		car = new Rectangle(105, HEIGHT-230, width, height);
 		space = 105;
-		speed = 2;
+		speed = 3;
 		
 		addKeyListener(this);
 		setFocusable(true);
@@ -92,28 +99,36 @@ public class Work extends JPanel implements ActionListener, KeyListener {
 	public void paintComponent(Graphics g) {
 		super.paintComponents(g);
 		
-		g.setColor(Color.black);
-		g.fillRect(0, 0, WIDTH, HEIGHT);
-		g.setColor(Color.darkGray);
-		g.fillRect(100, 0, 400, HEIGHT);
+		//g.setColor(Color.black);
+		//g.fillRect(0, 0, WIDTH, HEIGHT);
+		g.drawImage(bg, 0, 0, null);
+		//g.drawImage(ennemie, 0, 400, null);
+		//g.setColor(Color.darkGray);
+		//g.fillRect(100, 0, 400, HEIGHT);
 		
-		//g.drawImage(carImage, car.x, car.y, null);
+		g.drawImage(carImage, car.x, car.y, null);
 		
+		//g.setColor(Color.red);
+		//g.fillRect(car.x, car.y, car.width, car.height);
+		
+		//g.setColor(Color.pink);
+		//g.drawLine(200, 0, 200, HEIGHT);
+		//g.setColor(Color.pink);
+		//g.drawLine(300, 0, 300, HEIGHT);
+		//g.setColor(Color.pink);
+		//g.drawLine(400, 0, 400, HEIGHT);
 		g.setColor(Color.red);
-		g.fillRect(car.x, car.y, car.width, car.height);
-		
-		g.setColor(Color.pink);
-		g.drawLine(200, 0, 200, HEIGHT);
-		g.setColor(Color.pink);
-		g.drawLine(300, 0, 300, HEIGHT);
-		g.setColor(Color.pink);
-		g.drawLine(400, 0, 400, HEIGHT);
-		
-		g.setColor(Color.MAGENTA);
+		g.drawString("SPACE", 23, 30);
+		g.drawString("ESCAPE", 20, 45);
+		g.drawString("____________", 10, 60);
+		g.drawString("SCORE : " + score, 15, 100);
+		g.drawString("____________", 10, 640);
+		g.drawString("DEV BY KCL" , 15, 660);
+		//g.setColor(Color.MAGENTA);
 		
 		for(Rectangle rect:ennemies) {
-			
-			g.fillRect(rect.x, rect.y, rect.width, rect.height);
+			g.drawImage(ennemie, rect.x, rect.y, null);
+			//g.fillRect(rect.x, rect.y, rect.width, rect.height);
 		}
 		
 		if(isALive == false) {
@@ -127,16 +142,21 @@ public class Work extends JPanel implements ActionListener, KeyListener {
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		Rectangle rect;
-		count++;
+		count += 1;
 		for(int i=0; i<ennemies.size();i++) {
 			rect=ennemies.get(i);
-			if(count%1000 == 0) {
-				speed++;
-				if(move<50) {
-					move+=10;
-				}
+			
+ 			rect.y+=speed;
+		}
+		
+		if(count%1000 == 0) {
+			speed = speed + 2;
+			if(move<50) {
+				move = move+10;
 			}
-			rect.y+=speed;
+		}
+		if(count%20 == 0) {
+			score = score + 1;
 		}
 		
 		for(Rectangle r:ennemies) {
