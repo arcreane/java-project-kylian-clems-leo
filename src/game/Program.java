@@ -16,16 +16,20 @@ public class Program implements KeyListener {
 	
 
 	public static void main(String[] args) {
-		
+		JFrame app= new JFrame();
+		start();
+			
+	}
+	
+	public static void start() {
 		JFrame app= new JFrame();
 		Work w = new Work();
 		app.add(w);
 		app.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		app.setSize(600, 700);
 		app.setVisible(true);
-			
+		
 	}
-	
 
 	@Override
 	public void keyTyped(KeyEvent e) {
@@ -45,7 +49,7 @@ public class Program implements KeyListener {
 		int key=e.getKeyCode();
 		switch(key) {
 			case KeyEvent.VK_ENTER:
-				main(new String[0]);
+				start();
 				break;
 			default:
 				break;

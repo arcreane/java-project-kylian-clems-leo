@@ -65,7 +65,7 @@ public class Work extends JPanel implements ActionListener, KeyListener {
 		addKeyListener(this);
 		setFocusable(true);
 		
-		for(int i=0; i<10; i++) {
+		for(int i=0; i<6; i++) {
 			
 			addennemies(true);
 			
@@ -292,6 +292,9 @@ public class Work extends JPanel implements ActionListener, KeyListener {
 				break;
 			case KeyEvent.VK_LEFT:
 				moveleft();
+				break;
+			case KeyEvent.VK_ENTER:
+				new Work();
 				break;
 			default:
 				break;
