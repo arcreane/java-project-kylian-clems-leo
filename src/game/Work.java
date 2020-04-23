@@ -1,6 +1,7 @@
 package game;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
@@ -132,8 +133,10 @@ public class Work extends JPanel implements ActionListener, KeyListener {
 		}
 		
 		if(isALive == false) {
-			g.setColor(Color.white);
-			g.drawString("PERDU", 250, 100);
+			g.setColor(Color.red);
+			Font myFont = new Font ("Courier New", 1, 24);
+			g.setFont (myFont);
+			g.drawString("GAME OVER", 240, 100);
 		}
 	}
 	
@@ -145,18 +148,7 @@ public class Work extends JPanel implements ActionListener, KeyListener {
 		count += 1;
 		for(int i=0; i<ennemies.size();i++) {
 			rect=ennemies.get(i);
-			
  			rect.y+=speed;
-		}
-		
-		if(count%1000 == 0) {
-			speed = speed + 2;
-			if(move<50) {
-				move = move+10;
-			}
-		}
-		if(count%20 == 0) {
-			score = score + 1;
 		}
 		
 		for(Rectangle r:ennemies) {
@@ -165,19 +157,38 @@ public class Work extends JPanel implements ActionListener, KeyListener {
 				car.y=r.y+height;
 			}
 		}
+		if(isALive == true ) {
+			if(count%1000 == 0) {
+				speed = speed + 2;
+				if(move<50) {
+					move = move+10;
+				}
+			}
+			if(count%20 == 0) {
+				score = score + 1;
+			}
+			
+		}
+		
+		repaint();
+		
+		
+		
 		
 		
 		for(int i=0;i<ennemies.size();i++) {
 			rect=ennemies.get(i);
 			if(rect.y+rect.height>HEIGHT) {
 				ennemies.remove(rect);
-				addennemies(false);
+				if(isALive == true) {
+					addennemies(false);
+				}
 				
 				
 			}
 		}
 		
-			repaint();
+			
 		
 	}
 
