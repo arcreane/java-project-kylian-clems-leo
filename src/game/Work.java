@@ -69,7 +69,7 @@ public class Work extends JPanel implements ActionListener, KeyListener {
 		addKeyListener(this);
 		setFocusable(true);
 		
-		for(int i=0; i<6; i++) {
+		for(int i=0; i<3; i++) {
 			
 			addennemies(true);
 			
@@ -82,7 +82,7 @@ public class Work extends JPanel implements ActionListener, KeyListener {
 	public void addbonus() {
 		int [] positionEnnemies = {105,205,305,405};
 		int select=rand.nextInt(4);
-		//System.out.println("numéro : " + select);
+		//System.out.println("numï¿½ro : " + select);
 		int positionX = (int)Array.get(positionEnnemies, select);
 		int x=0;
 		int y=0;
@@ -108,7 +108,7 @@ public class Work extends JPanel implements ActionListener, KeyListener {
 	public void addshield() {
 		int [] positionEnnemies = {105,205,305,405};
 		int select=rand.nextInt(4);
-		//System.out.println("numéro : " + select);
+		//System.out.println("numï¿½ro : " + select);
 		int positionX = (int)Array.get(positionEnnemies, select);
 		int x=0;
 		int y=0;
@@ -135,7 +135,7 @@ public class Work extends JPanel implements ActionListener, KeyListener {
 	public void addennemies(boolean first) {
 		int [] positionEnnemies = {105,205,305,405};
 		int select=rand.nextInt(4);
-		//System.out.println("numéro : " + select);
+		//System.out.println("numï¿½ro : " + select);
 		int positionX = (int)Array.get(positionEnnemies, select);
 		int x=0;
 		int y=0;
@@ -155,9 +155,9 @@ public class Work extends JPanel implements ActionListener, KeyListener {
 		}
 		
 		if(first) {
-			ennemies.add(new Rectangle(x, y-200-(ennemies.size()*space), Width, 90));
+			ennemies.add(new Rectangle(x, y-200-(ennemies.size()*space)-100, Width, 90));
 		} else {
-			ennemies.add(new Rectangle(x, ennemies.get(ennemies.size()-1).y-250, Width, 90));
+			ennemies.add(new Rectangle(x, ennemies.get(ennemies.size()-1).y-300, Width, 90));
 		}
 		
 	}
@@ -178,11 +178,17 @@ public class Work extends JPanel implements ActionListener, KeyListener {
 		g.drawString("VITESSE : " + speed, 15, 125);
 		
 		
-		g.drawString("RAMASSEZ" , 20, 340);
-		g.drawString("L'ICON" , 30, 360);
-		g.drawImage(bonusImage, 10, 365, null);
-		g.drawString("REDUIT" , 30, 435);
-		g.drawString("LA VITESSE" , 20, 450);
+		g.drawString("RAMASSEZ" , 15, 240);
+		g.drawString("L'ICON" , 25, 260);
+		g.drawImage(bonusImage, 5, 265, null);
+		g.drawString("REDUIT" , 25, 335);
+		g.drawString("LA VITESSE" , 10, 350);
+		
+		g.drawString("RAMASSEZ" , 15, 440);
+		g.drawString("L'ICON" , 25, 460);
+		g.drawImage(shieldImage, 5, 465, null);
+		g.drawString("DETRUIT" , 25, 535);
+		g.drawString("LES ENNEMIES" , 5, 550);
 
 		
 		g.drawString("____________", 10, 640);
@@ -257,7 +263,7 @@ public class Work extends JPanel implements ActionListener, KeyListener {
 			
 		}
 		if(ennemies.isEmpty()) {
-			for(int j =0; j<6; j++) {
+			for(int j =0; j<3; j++) {
 				addennemies(true);
 			}
 		}
@@ -292,7 +298,11 @@ public class Work extends JPanel implements ActionListener, KeyListener {
 						addbonus();
 					
 					}
+<<<<<<< HEAD
 					if(num == 70) {
+=======
+					if(num == 23 || num == 80) {
+>>>>>>> aad96b6bae8dc8d1495209196a1bc810b263db2e
 		
 						addshield();
 						
@@ -340,6 +350,9 @@ public class Work extends JPanel implements ActionListener, KeyListener {
 				break;
 			case KeyEvent.VK_LEFT:
 				moveleft();
+				break;
+			case KeyEvent.VK_ENTER:
+				new Work();
 				break;
 			default:
 				break;
