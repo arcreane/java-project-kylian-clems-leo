@@ -292,7 +292,7 @@ public class Work extends JPanel implements ActionListener, KeyListener {
 						addbonus();
 					
 					}
-					if(num <= 70) {
+					if(num == 70) {
 		
 						addshield();
 						
