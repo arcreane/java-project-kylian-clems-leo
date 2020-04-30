@@ -1,13 +1,31 @@
 package game.personnage;
 
-import game.environnement.Laser;
+import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.io.File;
+
+import javax.imageio.ImageIO;
+
+import game.Work;
 import game.environnement.Shield;
 
-public class Player extends Character {
+public class Player extends Character implements ActionListener, KeyListener{
 	public int NbNewBullet;
 	public Shield NbShields;
 	public Shield Shield;
-	public Laser Laser;
+	private int WIDTH = 800;
+	//public Laser Laser;
+	private int move = 100;
+	
+	public Player(int X, int Y)
+	{
+		super( "src/car.png", X, Y);
+
+		
+	}
 	public void Shoot() {
 	}
 	
@@ -27,13 +45,13 @@ public class Player extends Character {
 		Shield = shield;
 	}
 
-	public Laser getLaser() {
-		return Laser;
-	}
-
-	public void setLaser(Laser laser) {
-		Laser = laser;
-	}
+//	public Laser getLaser() {
+//		return Laser;
+//	}
+//
+//	public void setLaser(Laser laser) {
+//		Laser = laser;
+//	}
 
 	public void Die() {
 	}
@@ -53,4 +71,61 @@ public class Player extends Character {
 			NbNewBullet += 0;
 		}
 	}
+
+
+	@Override
+	public void Move() {}
+	
+	public void moveleft() {
+		
+		if (m_iX + move < WIDTH / 2 + 5) {
+		} else {
+			m_iX -= move;
+		}
+	}
+
+	public void moveright() {
+		if (m_iX + move > WIDTH / 2 + 5) {
+		} else {
+			m_iX += move;
+		}
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		// TODO Auto-generated method stub
+		int key = e.getKeyCode();
+		switch (key) {
+		case KeyEvent.VK_RIGHT:
+			moveright();
+			break;
+		case KeyEvent.VK_LEFT:
+			moveleft();
+			break;
+		case KeyEvent.VK_ENTER:
+			new Work();
+			break;
+		default:
+			break;
+		}
+	}
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
 }

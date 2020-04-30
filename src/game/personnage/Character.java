@@ -7,6 +7,10 @@ public abstract class Character extends GameElements {
 public int NbLifes;
 	public Shield Shield;
 	
+	public Character(String src, int X, int Y)
+	{
+		super(src, X, Y);
+	}
 	public void Moove() {
 		
 	}

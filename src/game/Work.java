@@ -20,342 +20,184 @@ import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
-public class Work extends JPanel implements ActionListener, KeyListener {
-	
+import game.environnement.GameElements;
+import game.environnement.Shield;
+import game.environnement.ShieldBonus;
+import game.personnage.Enemy;
+import game.personnage.Player;
+
+public class Work extends JPanel implements ActionListener {
+
 	private int space;
-	private int width=90;
-	private int height=100;
+	private int width = 90;
+	private int height = 100;
 	private int speed;
-	private int move = 100;
+
 	private int count = 1;
-	private int WIDTH=800;
-	private int HEIGHT=800;
+
 	private int score = 0;
-	private ArrayList <Rectangle> ennemies;
-	private ArrayList <Rectangle> bonus;
-	private ArrayList <Rectangle> shield;
+	private ArrayList<GameElements> gameElement;
 	private Random rand;
 	private boolean isALive = true;
-	BufferedImage carImage;
-	BufferedImage ennemie;
 	BufferedImage bg;
-	BufferedImage bonusImage;
 	BufferedImage shieldImage;
+	BufferedImage bonusImage;
 	Timer t;
-	private Rectangle car;
-	
+	private Player car;
+
 	public Work() {
+
+		car = new Player(105, 570);
+
 		try {
-			
-			carImage=ImageIO.read(new File( "src/car.png"));
-			ennemie=ImageIO.read(new File("src/ennemy.png"));
-			shieldImage=ImageIO.read(new File("src/shield.png"));
-			bg=ImageIO.read(new File("src/bg-game.png"));
-			bonusImage = ImageIO.read(new File("src/bonus-more.png"));
+			bg = ImageIO.read(new File("src/bg-game.png"));
+
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		t=new Timer(20, this);
+		t = new Timer(20, this);
 		rand = new Random();
-		
-		ennemies = new ArrayList<Rectangle>();
-		bonus = new ArrayList<Rectangle>();
-		shield = new ArrayList<Rectangle>();
-		car = new Rectangle(105, HEIGHT-230, width, height);
+
+		gameElement = new ArrayList<GameElements>();
+		gameElement.add(car);
+		fillGameElements();
 		space = 105;
 		speed = 3;
-		
-		addKeyListener(this);
+		addKeyListener(car);
 		setFocusable(true);
-		
-		for(int i=0; i<3; i++) {
-			
-			addennemies(true);
-			
-		}
 
 		t.start();
 	}
-	
-	
-	public void addbonus() {
-		int [] positionEnnemies = {105,205,305,405};
-		int select=rand.nextInt(4);
-		//System.out.println("num�ro : " + select);
-		int positionX = (int)Array.get(positionEnnemies, select);
-		int x=0;
-		int y=0;
-		int Width=width;
-		int Height=height;
-		
-		if(positionX == 105) {
-			x=105;
-		} else if(positionX == 205) {
-			x=205;
-		} else if(positionX == 305) {
-			x=305;
-		} else if(positionX == 405) {
-			x=405;
-		} else {
-			
-		}
 
-			bonus.add(new Rectangle(x, y-100-(bonus.size()*space), Width, 50));
-		
-	}
-	
-	public void addshield() {
-		int [] positionEnnemies = {105,205,305,405};
-		int select=rand.nextInt(4);
-		//System.out.println("num�ro : " + select);
-		int positionX = (int)Array.get(positionEnnemies, select);
-		int x=0;
-		int y=0;
-		int Width=width;
-		int Height=height;
-		
-		if(positionX == 105) {
-			x=105;
-		} else if(positionX == 205) {
-			x=205;
-		} else if(positionX == 305) {
-			x=305;
-		} else if(positionX == 405) {
-			x=405;
-		} else {
-			
-		}
+	public void fillGameElements() {
+		int[] positionEnnemies = { 105, 205, 305, 405 };
+		int select = rand.nextInt(4);
+		// System.out.println("num�ro : " + select);
+		int positionX = (int) Array.get(positionEnnemies, select);
+		int x = 105;
+		int y = 0;
+		int Width = width;
+		int Height = height;
 
-			shield.add(new Rectangle(x, y-100-(shield.size()*space), Width, 50));
-		
-	}
-	
-	
-	public void addennemies(boolean first) {
-		int [] positionEnnemies = {105,205,305,405};
-		int select=rand.nextInt(4);
-		//System.out.println("num�ro : " + select);
-		int positionX = (int)Array.get(positionEnnemies, select);
-		int x=0;
-		int y=0;
-		int Width=width;
-		int Height=height;
-		
-		if(positionX == 105) {
-			x=105;
-		} else if(positionX == 205) {
-			x=205;
-		} else if(positionX == 305) {
-			x=305;
-		} else if(positionX == 405) {
-			x=405;
-		} else {
-			
+		x = positionX;
+		// Creation des ennemis
+		for (int i = 0; i < 10; i++) {
+			gameElement.add(new Enemy(x, y));// - 200 - (gameElement.size() * space) - 100));
 		}
-		
-		if(first) {
-			ennemies.add(new Rectangle(x, y-200-(ennemies.size()*space)-100, Width, 90));
-		} else {
-			ennemies.add(new Rectangle(x, ennemies.get(ennemies.size()-1).y-300, Width, 90));
+		// Creation des Shield
+		for (int i = 0; i < 3; i++) {
+			Shield tmp = new Shield(x, y - 200 - (gameElement.size() * space) - 100);
+			gameElement.add(tmp);
+			if (shieldImage == null)
+				shieldImage = tmp.getImage();
+		}
+		// Creation des bombes
+		for (int i = 0; i < 3; i++) {
+			GameElements tmp = new ShieldBonus(x, y - 200 - (gameElement.size() * space) - 100);
+			gameElement.add(tmp);
+			if (bonusImage == null)
+				bonusImage = tmp.getImage();
 		}
 		
 	}
-	
+
 	public void paintComponent(Graphics g) {
 		super.paintComponents(g);
-		
-		
+
 		g.drawImage(bg, 0, 0, null);
-		
-		g.drawImage(carImage, car.x, car.y, null);
-		
+
+		car.Draw(g);
+
 		g.setColor(Color.red);
 		g.drawString("SPACE", 30, 30);
 		g.drawString("ESCAPE", 25, 45);
 		g.drawString("____________", 10, 60);
 		g.drawString("SCORE : " + score, 15, 100);
 		g.drawString("VITESSE : " + speed, 15, 125);
-		
-		
-		g.drawString("RAMASSEZ" , 15, 240);
-		g.drawString("L'ICON" , 25, 260);
-		g.drawImage(bonusImage, 5, 265, null);
-		g.drawString("REDUIT" , 25, 335);
-		g.drawString("LA VITESSE" , 10, 350);
-		
-		g.drawString("RAMASSEZ" , 15, 440);
-		g.drawString("L'ICON" , 25, 460);
-		g.drawImage(shieldImage, 5, 465, null);
-		g.drawString("DETRUIT" , 25, 535);
-		g.drawString("LES ENNEMIES" , 5, 550);
 
-		
+		g.drawString("RAMASSEZ", 15, 240);
+		g.drawString("L'ICON", 25, 260);
+		g.drawImage(shieldImage, 5, 265, null);
+		g.drawString("REDUIT", 25, 335);
+		g.drawString("LA VITESSE", 10, 350);
+
+		g.drawString("RAMASSEZ", 15, 440);
+		g.drawString("L'ICON", 25, 460);
+		g.drawImage(bonusImage, 5, 465, null);
+		g.drawString("DETRUIT", 25, 535);
+		g.drawString("LES ENNEMIES", 5, 550);
+
 		g.drawString("____________", 10, 640);
-		g.drawString("DEV BY KCL" , 15, 660);
-		//g.setColor(Color.MAGENTA);
-		
-		for(Rectangle rect:bonus) {
-			g.drawImage(bonusImage, rect.x,rect.y, null);
-		}
-		
-		for(Rectangle rect:shield) {
-			g.drawImage(shieldImage, rect.x,rect.y, null);
-		}
-		
-		for(Rectangle rect:ennemies) {
-			g.drawImage(ennemie, rect.x, rect.y, null);
-			//g.fillRect(rect.x, rect.y, rect.width, rect.height);
+		g.drawString("DEV BY KCL", 15, 660);
+		// g.setColor(Color.MAGENTA);
+
+		for (GameElements rect : gameElement) {
+			rect.Draw(g);
 		}
 
-		if(isALive == false) {
+		if (isALive == false) {
 			g.setColor(Color.red);
-			Font myFont = new Font ("Courier New", 1, 24);
-			g.setFont (myFont);
+			Font myFont = new Font("Courier New", 1, 24);
+			g.setFont(myFont);
 			g.drawString("GAME OVER", 240, 100);
 			g.drawString("VOTRE SCORE : " + score, 200, 120);
 			g.setColor(Color.white);
-			Font myFont2 = new Font ("Courier New", 1, 20);
-			g.setFont (myFont2);
+			Font myFont2 = new Font("Courier New", 1, 20);
+			g.setFont(myFont2);
 			g.drawString("Tapez entrer pour recommercer", 130, 160);
 		}
 	}
-	
+
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-		Rectangle rect;
-		count += 1;
-		for(int i=0; i<ennemies.size();i++) {
-			rect=ennemies.get(i);
- 			rect.y+=speed;
+		for (GameElements gameElements : gameElement) {
+			gameElements.Move();
+			gameElements.interact(car);
 		}
-		for(int i=0; i<bonus.size();i++) {
-			rect=bonus.get(i);
- 			rect.y+=speed;
-		}
-		
-		for(int i=0; i<shield.size();i++) {
-			rect=shield.get(i);
-			rect.y+=speed;
- 			
-		}
-		
-		
-		for(Rectangle r:ennemies) {
-			if(r.intersects(car)) {	
-				isALive = false;
-				car.y=r.y+height;	
-			}
-		}
-		
-		for(Rectangle r:bonus) {
-			if(r.intersects(car)) {
-				speed = 3;
-			}
-		}
-		
-		for(Rectangle r:shield) {
-			if(r.intersects(car)) {
-			
-				ennemies = new ArrayList<Rectangle>();
-				
-			}
-			
-		}
-		if(ennemies.isEmpty()) {
-			for(int j =0; j<3; j++) {
-				addennemies(true);
-			}
-		}
-		
-		if(isALive == true ) {
-			if(count%1000 == 0) {
-				speed =  speed + 2;
-				if(move<50) {
-					move += 10;
-				}
-			}
-			if(count%20 == 0) {
-				score = score + 1;
-			}
-			
-		}
-		
+
+//		if (ennemies.isEmpty()) {
+//			for (int j = 0; j < 3; j++) {
+//				addennemies(true);
+//			}
+//		}
+//
+//		if (isALive == true) {
+//			if (count % 1000 == 0) {
+//				speed = speed + 2;
+//				if (move < 50) {
+//					move += 10;
+//				}
+//			}
+//			if (count % 20 == 0) {
+//				score = score + 1;
+//			}
+//
+//		}
+//
 		repaint();
-		
-		
-		for(int i=0;i<ennemies.size();i++) {
-			rect=ennemies.get(i);
-			if(rect.y+rect.height>HEIGHT) {
-				ennemies.remove(rect);
-				if(isALive == true) {
-					for(int j =0; j<6; j++) {
-						addennemies(false);
-					}
-					int num = rand.nextInt(101);
-					//System.out.println(num);
-					if(num == 0) {
-						addbonus();
-					
-					}
-					if(num == 23 || num == 80) {
-		
-						addshield();
-						
-					}
-				}
-			}
-		}
+//
+//		for (int i = 0; i < ennemies.size(); i++) {
+//			rect = ennemies.get(i);
+//			if (rect.y + rect.height > HEIGHT) {
+//				ennemies.remove(rect);
+//				if (isALive == true) {
+//					for (int j = 0; j < 6; j++) {
+//						addennemies(false);
+//					}
+//					int num = rand.nextInt(101);
+//					// System.out.println(num);
+//					if (num < 30) {
+//						addbonus();
+//
+//					}
+//					if (num <= 30) {
+//
+//						addshield();
+//
+//					}
+//				}
+//			}
+//		}
 	}
-
-	
-	public void moveleft() {
-		if(car.x-move<WIDTH/4-105) {
-			
-		} else {
-			car.x-=move;
-		}
-	}
-	
-	public void moveright() {
-		if(car.x+move>WIDTH/2+5) {
-			
-		} else {
-			car.x+=move;
-		}
-	}
-	@Override
-	public void keyTyped(KeyEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void keyPressed(KeyEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void keyReleased(KeyEvent e) {
-		// TODO Auto-generated method stub
-		int key=e.getKeyCode();
-		switch(key) {
-			case KeyEvent.VK_RIGHT:
-				moveright();
-				break;
-			case KeyEvent.VK_LEFT:
-				moveleft();
-				break;
-			case KeyEvent.VK_ENTER:
-				new Work();
-				break;
-			default:
-				break;
-		}
-	}
-
-	
-	
 
 }
